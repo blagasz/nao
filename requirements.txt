@@ -1,0 +1,8 @@
+.
+
+# single dot means what is specified in the
+# setup.py's install_requires argument
+
+# installation based on requirements.txt
+# could be initiated by calling pip with
+# an -r flag

@@ -1,0 +1,11 @@
+# general Python
+__pycache__/
+*.py[cod]
+.cache/
+MANIFEST.in
+*.egg-info/
+
+# nao specific
+TODO
+
+dist/*
