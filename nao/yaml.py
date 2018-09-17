@@ -31,7 +31,6 @@ from yaml.emitter import Emitter
 from yaml.nodes import MappingNode, ScalarNode
 # from yaml.dumper import SafeDumper
 
-from .utils import obj2xml
 from .types import odict, naodict, nao
 
 

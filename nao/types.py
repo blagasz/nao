@@ -1,10 +1,5 @@
 
-try:
-    from collections import OrderedDict as odict # from Python 2.7
-except ImportError:
-    from .od_backport import OrderedDict as odict
-
-
+from collections import OrderedDict as odict
 
 class naodict(odict):
     """
@@ -25,7 +20,6 @@ class naodict(odict):
             self[key] = value
         else:
             super().__setattr__(key, value)
-
 
 class nao():
     """

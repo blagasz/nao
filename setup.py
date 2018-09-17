@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 setup(
   name = 'nao',
   packages = find_packages(),
-  version = '0.1.16',
+  version = '0.1.17',
   description = 'Intelligent data manipulation tools',
   author = 'Szabolcs Blaga',
   author_email = 'szabolcs.blaga@gmail.com',
@@ -13,6 +13,7 @@ setup(
     'PyYAML',
     'numpy==1.11.1',
     'pandas==0.18.1',  # for datetime conversion and distinct
+    'SQLAlchemy',
   ],
   keywords = ['data', 'yaml', 'multilingual', 'multivalue', 'config'],
   classifiers = [],
