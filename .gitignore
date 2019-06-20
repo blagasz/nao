@@ -3,9 +3,17 @@ __pycache__/
 *.py[cod]
 .cache/
 MANIFEST.in
+MANIFEST
 *.egg-info/
 
 # nao specific
 TODO
+tests/*
+build/*
+
+.directory
+*.sublime-project
+*.sublime-workspace
+_etc/*
 
 dist/*

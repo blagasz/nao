@@ -1,57 +1,38 @@
+import warnings
+import collections
 
-from collections import OrderedDict as odict
+class naodict(collections.OrderedDict):
+    """basic attribute access for ordered dict
 
-class naodict(odict):
+    keys that collide with predefined attribute names
+    could not be set or accessed in attribute-style
+
+    trying to set a predefined attribute produce `UserWarning`
     """
-    very basic attribute access for ordered dict
-    names that collide with predefined names
-    could not be accesed in attribute style
-    """
+    def __init__(self, *args, **kwds):
+        super().__init__(*args, **kwds)
+
+        for key in self:
+            if hasattr(self, key):
+                warnings.warn(f"existing attribute will shadow attribute-style access for {key}")
+
 
     def __getattr__(self, key):
+        # not called if the attribute present!
         if key in self:
             return self[key]
-        
         return super().__getattr__(key)
 
 
     def __setattr__(self, key, value):
-        if not key.startswith('_'):
+        if hasattr(self, key):
+            warnings.warn(f"updating existing attribute {key}")
+            super().__setattr__(key, value)
+        else:
             self[key] = value
-        else:
-            super().__setattr__(key, value)
-
-class nao():
-    """
-    if you shadow important methods with __getattribute__
-    like `items` then a lot of functionality that
-    relies on that might not work (e.g. pprint)
-
-    if __getattribute__ is used then it should
-    not inherit from  dict or odict but create
-    a new type with a hidden dictionary and
-    no standard methods...
-    """
-
-    def __init__(self):
-        self._dict = odict()
 
 
-    def __getattribute__(self, key):
-        if not key.startswith('_') and key in self._dict:
-            return self._dict[key]
-        
-        return super().__getattribute__(key)
-
-
-    def __setattr__(self, key, value):
-        if not key.startswith('_'):
-            self._dict[key] = value
-        else:
-            super().__setattr__(key, value)
-
-
-    def __repr__(self):
-
-        return self._dict.__repr__()
-
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        if hasattr(self, key):
+            warnings.warn(f"existing attribute will shadow attribute-style access for {key}")

@@ -1,5 +1,6 @@
 """
-ADD THIS TO FLASK-LOGIN
+
+
 """
 
 from functools import wraps
@@ -13,64 +14,12 @@ from flask_login import (
 
 from collections import OrderedDict as odict
 
-
-class naodict(odict):
-    """
-    very basic attribute access for ordered dict
-    names that collide with predefined names
-    could not be accesed in attribute style
-    """
-
-    def __getattr__(self, key):
-        if key in self:
-            return self[key]
-        
-        return super().__getattr__(key)
-
-
-    def __setattr__(self, key, value):
-        if not key.startswith('_'):
-            self[key] = value
-        else:
-            super().__setattr__(key, value)
-
-
-class nao():
-    """
-    if you shadow important methods with __getattribute__
-    like `items` then a lot of functionality that
-    relies on that might not work (e.g. pprint)
-
-    if __getattribute__ is used then it should
-    not inherit from  dict or odict but create
-    a new type with a hidden dictionary and
-    no standard methods...
-    """
-
-    def __init__(self):
-        self._dict = odict()
-
-
-    def __getattribute__(self, key):
-        if not key.startswith('_') and key in self._dict:
-            return self._dict[key]
-        
-        return super().__getattribute__(key)
-
-
-    def __setattr__(self, key, value):
-        if not key.startswith('_'):
-            self._dict[key] = value
-        else:
-            super().__setattr__(key, value)
-
-
-    def __repr__(self):
-
-        return self._dict.__repr__()
-
+from ..types import naodict
 
 class LoginManager(OrigLoginManager):
+	"""
+	FLASK-LOGIN enhancement
+	"""
 
     def __init__(self, *args, **kwds):
         super().__init__(*args, **kwds)
@@ -131,7 +80,7 @@ class LoginManager(OrigLoginManager):
             if ok and endpoint in links:
                 key, url = links[endpoint]
 
-                item = nao()
+                item = naodict()
                 item.url = url
                 item.key = key
                 item.endpoint = endpoint
@@ -176,7 +125,7 @@ class LoginManager(OrigLoginManager):
                 # add to collection if not already there
                 if key_piece not in col:
                     # create a pseudo-node
-                    x = nao()
+                    x = naodict()
                     x.url = "#"
                     x.subs = []
                     # x.endpoint = ''
@@ -200,7 +149,7 @@ class LoginManager(OrigLoginManager):
 
         mp = self.get_menu_base()
 
-        menu = nao()
+        menu = naodict()
         menu.items = treebuilder(mp)
 
         return menu
